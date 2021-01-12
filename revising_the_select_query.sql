@@ -1,4 +1,4 @@
-# Revising the Select Query 1 - HackerRank Star 1
+-- Revising the Select Query 1 - HackerRank Star 1 --
 
 /*
 Query all columns for all American cities in the CITY table with populations larger than 100000. 
