@@ -73,9 +73,46 @@ GROUP BY CLASS
 HAVING COUNT(DISTINCT STUDENT) >= 5;
 
 /*
-
+Write an SQL query to reformat the table such that there is a department id column and a revenue column for each month.
 */
+SELECT ID, 
+    MAX(IF(MONTH="JAN", REVENUE, NULL)) AS JAN_REVENUE, 
+    MAX(IF(MONTH="FEB", REVENUE, NULL)) AS FEB_REVENUE, 
+    MAX(IF(MONTH="MAR", REVENUE, NULL)) AS MAR_REVENUE,
+    MAX(IF(MONTH="APR", REVENUE, NULL)) AS APR_REVENUE,
+    MAX(IF(MONTH="MAY", REVENUE, NULL)) AS MAY_REVENUE,
+    MAX(IF(MONTH="JUN", REVENUE, NULL)) AS JUN_REVENUE,
+    MAX(IF(MONTH="JUL", REVENUE, NULL)) AS JUL_REVENUE,
+    MAX(IF(MONTH="AUG", REVENUE, NULL)) AS AUG_REVENUE,
+    MAX(IF(MONTH="SEP", REVENUE, NULL)) AS SEP_REVENUE,
+    MAX(IF(MONTH="OCT", REVENUE, NULL)) AS OCT_REVENUE,
+    MAX(IF(MONTH="NOV", REVENUE, NULL)) AS NOV_REVENUE,
+    MAX(IF(MONTH="DEC", REVENUE, NULL)) AS DEC_REVENUE
+FROM DEPARTMENT
+GROUP BY ID
+ORDER BY ID
 
 /*
-
+A country is big if it has an area of bigger than 3 million square km or a population of more than 25 million.
+Write a SQL solution to output big countries' name, population and area.
 */
+SELECT NAME, POPULATION, AREA
+FROM WORLD
+WHERE (AREA > 3000000) OR (POPULATION > 25000000);
+
+/*
+Given a table salary, such as the one below, that has m=male and f=female values. 
+Swap all f and m values (i.e., change all f values to m and vice versa) with a single update statement and no intermediate temp table.
+Note that you must write a single update statement, DO NOT write any select statement for this problem.
+*/
+UPDATE SALARY
+SET SEX = IF(SEX = "m", "f", "m");
+
+/*
+Please write a SQL query to output movies with an odd numbered ID and a description that is not 'boring'. 
+Order the result by rating (descending).
+*/
+SELECT ID, MOVIE, DESCRIPTION, RATING
+FROM CINEMA
+WHERE (ID % 2 = 1) AND (DESCRIPTION != 'boring')
+ORDER BY RATING DESC;
