@@ -26,3 +26,24 @@ Query the average population for all cities in CITY, rounded down to the nearest
 */
 SELECT ROUND(AVG(POPULATION))
 FROM CITY;
+
+/*
+Query the sum of the populations for all Japanese cities in CITY. The COUNTRYCODE for Japan is JPN.
+*/
+SELECT SUM(POPULATION)
+FROM CITY
+WHERE COUNTRYCODE LIKE ('JPN');
+
+/*
+Query the difference between the maximum and minimum populations in CITY.
+*/
+SELECT MAX(POPULATION) - MIN(POPULATION)
+FROM CITY;
+
+/*
+Query the following two values from the STATION table:
+The sum of all values in LAT_N rounded to a scale of  decimal places.
+The sum of all values in LONG_W rounded to a scale of  decimal places.
+*/
+SELECT ROUND(SUM(LAT_N),2), ROUND(SUM(LONG_W),2)
+FROM STATION;
