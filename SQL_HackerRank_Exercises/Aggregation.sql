@@ -109,3 +109,30 @@ is greater than 38.7780. Round your answer to 4 decimal places.
 SELECT ROUND(LONG_W, 4)
 FROM STATION
 WHERE LAT_N = (SELECT MIN(LAT_N) FROM STATION WHERE LAT_N > 38.7780)
+
+/*
+Consider P1(A,B) and P2(C,D) to be two points on a 2D plane.
+ A happens to equal the minimum value in Northern Latitude (LAT_N in STATION).
+ B happens to equal the minimum value in Western Longitude (LONG_W in STATION).
+ C happens to equal the maximum value in Northern Latitude (LAT_N in STATION).
+ D happens to equal the maximum value in Western Longitude (LONG_W in STATION).
+Query the Manhattan Distance between points P1 and P2 and round it to a scale of 4 decimal places.
+*/
+SELECT ROUND(ABS(MIN(LAT_N) - MAX(LAT_N)) + ABS(MIN(LONG_W) - MAX(LONG_W)), 4) 
+FROM STATION;
+
+/*
+Consider P1(A,B) and P2(C,D) to be two points on a 2D plane where (A,B) are the respective minimum and 
+maximum values of Northern Latitude (LAT_N) and (C,D) are the respective minimum and maximum values of 
+Western Longitude (LONG_W) in STATION.
+Query the Euclidean Distance between points  and  and format your answer to display  decimal digits.
+*/
+SELECT ROUND(SQRT(POWER(MIN(LAT_N) - MAX(LAT_N), 2) + POWER(MIN(LONG_W) - MAX(LONG_W), 2)), 4)
+FROM STATION;
+
+/*
+Query the median of the Northern Latitudes (LAT_N) from STATION and round your answer to 4 decimal places.
+*/
+SELECT DISTINCT 
+CAST(PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY LAT_N) OVER() AS DECIMAL(10,4)) 
+FROM STATION;
