@@ -136,3 +136,4 @@ Query the median of the Northern Latitudes (LAT_N) from STATION and round your a
 SELECT DISTINCT 
 CAST(PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY LAT_N) OVER() AS DECIMAL(10,4)) 
 FROM STATION;
+
