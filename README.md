@@ -1,3 +1,3 @@
 # SQL Hacker Rank Solutions
 
-This repository contains the solutions to various SQL problems from HackerRank.
+This repository contains my solutions to various SQL problems from various websites.
