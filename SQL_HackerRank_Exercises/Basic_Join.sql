@@ -75,3 +75,29 @@ WHERE WANDS_PROPERTY.IS_EVIL = 0 AND WANDS.COINS_NEEDED = (SELECT MIN(COINS_NEED
                                                            AND PROPERTY2.AGE = WANDS_PROPERTY.AGE) 
 ORDER BY WANDS.POWER DESC, WANDS_PROPERTY.AGE DESC
 ;
+
+/*
+Julia asked her students to create some coding challenges. 
+Write a query to print the hacker_id, name, and the total number of challenges created by each student. 
+Sort your results by the total number of challenges in descending order. 
+If more than one student created the same number of challenges, then sort the result by hacker_id. 
+If more than one student created the same number of challenges 
+and the count is less than the maximum number of challenges created, 
+then exclude those students from the result.
+*/
+SELECT HACKERS.HACKER_ID, HACKERS.NAME, COUNT(HACKERS.HACKER_ID) AS CHALLENGE_COUNT
+FROM HACKERS
+JOIN CHALLENGES ON HACKERS.HACKER_ID = CHALLENGES.HACKER_ID
+GROUP BY HACKERS.HACKER_ID, HACKERS.NAME
+HAVING CHALLENGE_COUNT = (SELECT MAX(TEMP_TABLE1.ID_COUNT)
+                          FROM (SELECT COUNT(HACKER_ID) AS ID_COUNT
+                                FROM CHALLENGES
+                                GROUP BY HACKER_ID) AS TEMP_TABLE1)
+       OR CHALLENGE_COUNT IN 
+                          (SELECT TEMP_TABLE2.ID_COUNT
+                           FROM (SELECT COUNT(*) AS ID_COUNT 
+                                 FROM CHALLENGES
+                                 GROUP BY HACKER_ID) AS TEMP_TABLE2
+                           GROUP BY TEMP_TABLE2.ID_COUNT
+                           HAVING COUNT(TEMP_TABLE2.ID_COUNT) = 1)
+ORDER BY CHALLENGE_COUNT DESC, HACKERS.HACKER_ID;
