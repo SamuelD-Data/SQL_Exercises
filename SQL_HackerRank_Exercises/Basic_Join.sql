@@ -41,3 +41,19 @@ SELECT IF(GRADE < 8, NULL, NAME), GRADE, MARKS
 FROM STUDENTS 
 JOIN GRADES WHERE MARKS BETWEEN MIN_MARK AND MAX_MARK
 ORDER BY GRADE DESC, NAME, MARKS;
+
+/*
+Write a query to print the respective hacker_id and name of hackers who achieved full scores for more than one challenge. 
+Order your output in descending order by the total number of challenges in which the hacker earned a full score. 
+If more than one hacker received full scores in same number of challenges, then sort them by ascending hacker_id.
+*/
+SELECT HACKERS.HACKER_ID, HACKERS.NAME
+FROM HACKERS
+JOIN SUBMISSIONS ON HACKERS.HACKER_ID = SUBMISSIONS.HACKER_ID
+JOIN CHALLENGES ON SUBMISSIONS.CHALLENGE_ID = CHALLENGES.CHALLENGE_ID
+JOIN DIFFICULTY ON CHALLENGES.DIFFICULTY_LEVEL = DIFFICULTY.DIFFICULTY_LEVEL
+WHERE SUBMISSIONS.SCORE = DIFFICULTY.SCORE
+GROUP BY HACKERS.HACKER_ID, HACKERS.NAME
+HAVING COUNT(HACKERS.HACKER_ID) > 1
+ORDER BY COUNT(HACKERS.HACKER_ID) DESC, HACKERS.HACKER_ID ASC
+;
