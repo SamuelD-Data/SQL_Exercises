@@ -57,3 +57,21 @@ GROUP BY HACKERS.HACKER_ID, HACKERS.NAME
 HAVING COUNT(HACKERS.HACKER_ID) > 1
 ORDER BY COUNT(HACKERS.HACKER_ID) DESC, HACKERS.HACKER_ID ASC
 ;
+
+/*
+Harry Potter and his friends are at Ollivander's with Ron, finally replacing Charlie's old broken wand.
+Determine the minimum number of gold galleons needed to buy each non-evil wand of each unique combination of power and age. 
+Write a query to print the id, age, coins_needed, and power of the wands that Ron's interested in, sorted in order of descending power. 
+If more than one wand has same power, sort the result in order of descending age.
+*/
+SELECT WANDS.ID, WANDS_PROPERTY.AGE, WANDS.COINS_NEEDED, WANDS.POWER
+FROM WANDS 
+JOIN WANDS_PROPERTY ON WANDS.CODE = WANDS_PROPERTY.CODE
+WHERE WANDS_PROPERTY.IS_EVIL = 0 AND WANDS.COINS_NEEDED = (SELECT MIN(COINS_NEEDED) 
+                                                           FROM WANDS AS WANDS2
+                                                           JOIN WANDS_PROPERTY AS PROPERTY2 ON 
+                                                           (WANDS2.CODE = PROPERTY2.CODE) 
+                                                           WHERE WANDS2.POWER = WANDS.POWER 
+                                                           AND PROPERTY2.AGE = WANDS_PROPERTY.AGE) 
+ORDER BY WANDS.POWER DESC, WANDS_PROPERTY.AGE DESC
+;
