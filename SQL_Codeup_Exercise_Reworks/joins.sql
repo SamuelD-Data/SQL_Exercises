@@ -104,3 +104,14 @@ JOIN (SELECT DEPT_NAME, CONCAT(FIRST_NAME, ' ', LAST_NAME) as MANAGER
 WHERE dept_emp.TO_DATE > CURDATE();
 
 -- Bonus Who is the highest paid employee within each department. --
+select first_name, last_name, max_salary, dept_name
+from employees
+join salaries as s on employees.emp_no = s.emp_no
+join dept_emp as de on employees.emp_no = de.emp_no
+join (select max(salary) as max_salary, dept_name, dept_emp.dept_no
+	from salaries
+	join dept_emp on salaries.emp_no = dept_emp.emp_no
+	join employees on salaries.emp_no = employees.emp_no
+	join departments on dept_emp.dept_no = departments.dept_no
+	group by dept_name) as max_salaries on de.dept_no = max_salaries.dept_no
+where s.salary = max_salary and de.to_date > curdate();
