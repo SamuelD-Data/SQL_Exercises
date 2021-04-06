@@ -101,3 +101,15 @@ HAVING CHALLENGE_COUNT = (SELECT MAX(TEMP_TABLE1.ID_COUNT)
                            GROUP BY TEMP_TABLE2.ID_COUNT
                            HAVING COUNT(TEMP_TABLE2.ID_COUNT) = 1)
 ORDER BY CHALLENGE_COUNT DESC, HACKERS.HACKER_ID;
+
+/*
+The total score of a hacker is the sum of their maximum scores for all of the challenges. 
+Write a query to print the hacker_id, name, and total score of the hackers ordered by the descending score. 
+If more than one hacker achieved the same total score, then sort the result by ascending hacker_id. 
+Exclude all hackers with a total score of  from your result.
+*/
+SELECT HACKERS.HACKER_ID, HACKERS.NAME, SUM(SUBMISSIONS.SCORE) AS TOTAL_SCORE
+FROM HACKERS
+JOIN SUBMISSIONS ON HACKERS.HACKER_ID = SUBMISSIONS.HACKER_ID
+GROUP BY HACKERS.HACKER_ID, HACKERS.NAME
+;
