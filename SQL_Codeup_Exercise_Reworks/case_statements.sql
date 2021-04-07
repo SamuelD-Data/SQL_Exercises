@@ -28,11 +28,30 @@ FROM employees;
 -- How many employees (current or previous) were born in each decade? -- 
 -- How many employees (current or previous) were born in each decade? -- 
 
-SELECT BIRTH_DATE, CASE
-					WHEN BIRTH_DATE BETWEEN 1970 AND 1991 THEN '50-90'
-					ELSE 'NOT 50 - 90'
-					END AS 'DECADE'
-FROM employees;
+SELECT CASE
+					WHEN BIRTH_DATE BETWEEN '1900/01/01' AND '1909/12/31' THEN '1900-1909'
+					WHEN BIRTH_DATE BETWEEN '1910/01/01' AND '1919/12/31' THEN '1910-1919'
+					WHEN BIRTH_DATE BETWEEN '1920/01/01' AND '1929/12/31' THEN '1920-1929'
+					WHEN BIRTH_DATE BETWEEN '1930/01/01' AND '1939/12/31' THEN '1930-1939'
+					WHEN BIRTH_DATE BETWEEN '1940/01/01' AND '1949/12/31' THEN '1940-1949'
+					WHEN BIRTH_DATE BETWEEN '1950/01/01' AND '1959/12/31' THEN '1950-1959'
+					WHEN BIRTH_DATE BETWEEN '1960/01/01' AND '1969/12/31' THEN '1960-1969'
+					WHEN BIRTH_DATE BETWEEN '1970/01/01' AND '1979/12/31' THEN '1970-1979'
+					WHEN BIRTH_DATE BETWEEN '1980/01/01' AND '1989/12/31' THEN '1980-1989'
+					WHEN BIRTH_DATE BETWEEN '1990/01/01' AND '1999/12/31' THEN '1990-1999'
+					ELSE '2000+'
+					END AS DECADE,
+	COUNT(*) as BIRTHDAY_COUNT
+FROM employees
+GROUP BY DECADE;
 
 -- What is the current average salary for each of the following department groups: -- 
 -- R&D, Sales & Marketing, Prod & QM, Finance & HR, Customer Service? -- 
+SELECT CASE
+		WHEN DEPT_NAME IN ('Research', 'Development') THEN 'R&D'
+		WHEN DEPT_NAME IN ('Sales', 'Marketing') THEN 'Sales & Marketing'
+		WHEN DEPT_NAME IN ('Production', 'Quality Management') THEN 'Prod & QM'
+		WHEN DEPT_NAME IN ('Finance', 'Human Resources') THEN 'Finance & HR'
+		ELSE 'Customer Service'
+		END AS 'DEPT', DEPT_NAME
+FROM departments
