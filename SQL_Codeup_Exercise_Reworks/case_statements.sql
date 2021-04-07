@@ -47,11 +47,16 @@ GROUP BY DECADE;
 
 -- What is the current average salary for each of the following department groups: -- 
 -- R&D, Sales & Marketing, Prod & QM, Finance & HR, Customer Service? -- 
+
 SELECT CASE
 		WHEN DEPT_NAME IN ('Research', 'Development') THEN 'R&D'
 		WHEN DEPT_NAME IN ('Sales', 'Marketing') THEN 'Sales & Marketing'
 		WHEN DEPT_NAME IN ('Production', 'Quality Management') THEN 'Prod & QM'
 		WHEN DEPT_NAME IN ('Finance', 'Human Resources') THEN 'Finance & HR'
 		ELSE 'Customer Service'
-		END AS 'DEPT', DEPT_NAME
+		END AS DEPT, 
+		AVG(SALARY) AS AVG_DEPT_SALARY
 FROM departments
+JOIN dept_emp on departments.DEPT_NO = dept_emp.DEPT_NO
+JOIN salaries on dept_emp.EMP_NO = salaries.EMP_no
+GROUP BY DEPT
