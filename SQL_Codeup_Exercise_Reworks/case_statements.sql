@@ -18,16 +18,21 @@ ON dept_emp.EMP_NO = misc_info.EMPLOYEE_NUMBER AND dept_emp.TO_DATE = misc_info.
 -- Write a query that returns all employee names (previous and current), and a new column 'alpha_group' that returns 'A-H', 'I-Q', or 'R-Z' -- 
 -- depending on the first letter of their last name. -- 
 
-SELECT FIRST_NAME, LAST_NAME, CASE SUBSTR(LAST_NAME, 1,1)
-        						WHEN 'A'THEN 'alpha'
-        						WHEN 'F' THEN 'f group'
-        						ELSE 'NOT A OR F'
+SELECT FIRST_NAME, LAST_NAME, CASE 
+        						WHEN SUBSTR(LAST_NAME, 1,1) BETWEEN 'A' AND 'H' THEN 'A-H'
+        						WHEN SUBSTR(LAST_NAME, 1,1) BETWEEN 'I' AND 'Q' THEN 'I-Q'
+        						ELSE 'R - Z'
         						END AS 'ALPHA_GROUP'
 FROM employees;
 
-
+-- How many employees (current or previous) were born in each decade? -- 
 -- How many employees (current or previous) were born in each decade? -- 
 
+SELECT BIRTH_DATE, CASE
+					WHEN BIRTH_DATE BETWEEN 1970 AND 1991 THEN '50-90'
+					ELSE 'NOT 50 - 90'
+					END AS 'DECADE'
+FROM employees;
 
 -- What is the current average salary for each of the following department groups: -- 
 -- R&D, Sales & Marketing, Prod & QM, Finance & HR, Customer Service? -- 
