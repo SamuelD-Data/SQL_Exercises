@@ -34,12 +34,19 @@ Write a query to print the contest_id, hacker_id, name, and the sums of total_su
 total_views, and total_unique_views for each contest sorted by contest_id. Exclude the contest from the result if all four sums are 0.
 Note: A specific contest can be used to screen candidates at more than one college, but each college only holds 1 screening contest.
 */
-
-SELECT con.CONTEST_ID, con.HACKER_ID,  con.NAME, col.COLLEGE_ID, chal.CHALLENGE_ID, vs.TOTAL_VIEWS, vs.TOTAL_UNIQUE_VIEWS, sub.TOTAL_SUBMISSIONS, sub.TOTAL_ACCEPTED_SUBMISSIONS
+SELECT con.CONTEST_ID, con.HACKER_ID,  con.NAME, SUMS.SUMTV, SUMS.SUMTTV, SUMS.SUMTS, SUMS.SUMTAS
 FROM contests AS con
 JOIN colleges AS col on con.CONTEST_ID = col.CONTEST_ID
 JOIN challenges AS chal on col.COLLEGE_ID = chal.COLLEGE_ID
 JOIN view_stats AS vs on chal.CHALLENGE_ID = vs.CHALLENGE_ID
 JOIN submission_stats AS sub on vs.CHALLENGE_ID = sub.CHALLENGE_ID
-GROUP BY con.CONTEST_ID
+JOIN (SELECT con.CONTEST_ID, sum(vs.TOTAL_VIEWS) AS SUMTV, sum(vs.TOTAL_UNIQUE_VIEWS) AS SUMTTV,
+      sum(sub.TOTAL_SUBMISSIONS) AS SUMTS, sum(sub.TOTAL_ACCEPTED_SUBMISSIONS) AS SUMTAS
+    FROM contests AS con
+    JOIN colleges AS col on con.CONTEST_ID = col.CONTEST_ID
+    JOIN challenges AS chal on col.COLLEGE_ID = chal.COLLEGE_ID
+    JOIN view_stats AS vs on chal.CHALLENGE_ID = vs.CHALLENGE_ID
+    JOIN submission_stats AS sub on vs.CHALLENGE_ID = sub.CHALLENGE_ID
+    GROUP BY con.CONTEST_ID) AS SUMS 
+    ON con.CONTEST_ID = SUMS.CONTEST_ID
 ORDER BY con.CONTEST_ID
