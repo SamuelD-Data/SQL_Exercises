@@ -40,5 +40,34 @@ from world
 group by continent) as newtable
 on (oldtable.continent = newtable.cont) and (oldtable.area = newtable.mar)
 
+-- List each continent and the name of the country that comes first alphabetically. --
+
+select continent, name
+from world a
+where name = (select min(name) from world b where a.continent = b.continent)
+
+-- Alternate approach --
+
+select continent, min(name)
+from world
+group by continent
+
+-- Find the continents where all countries have a population <= 25000000. --
+-- Then find the names of the countries associated with these continents. Show name, continent and population. --
+
+select name, continent, population
+from world a 
+where 25000000 >= all (select population from world b where a.continent = b.continent)
+
+-- Some countries have populations more than three times that of any of their neighbours (in the same continent). --
+-- Give the countries and continents. --
+
+select name, continent
+from world a
+where population > all(select (population * 3) from world b where a.continent = b.continent and (a.name != b.name))
 
 
+select a.name, a.continent 
+from world a
+join (select (population * 3) as pop3 from world b group by b.continent)
+where a.population > pop3
