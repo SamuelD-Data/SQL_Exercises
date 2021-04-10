@@ -1,7 +1,5 @@
 -- Lesson 6 --
 
--- Lesson 6 --
-
 -- List all of the Star Trek movies, include the id, title and yr (all of these movies include the words Star Trek in the title). --
 -- Order results by year. --
 
@@ -73,5 +71,44 @@ where actor.name = 'rock hudson'
 group by yr 
 having count(*) > 2
 
+-- List the film title and the leading actor for all of the films 'Julie Andrews' played in. --
 
+select title, name
+from actor
+join casting on actor.id = casting.actorid
+join movie on casting.movieid = movie.id
+where title in (select movie.title
+from actor
+join casting on actor.id = casting.actorid
+join movie on casting.movieid = movie.id
+where (actor.name = 'julie andrews')) and ord = 1
 
+-- Obtain a list, in alphabetical order, of actors who've had at least 15 starring roles. --
+
+select name
+from actor
+join casting on casting.actorid = actor.id
+where casting.ord = 1
+group by name
+having count(*) > 14
+order by name
+
+-- List the films released in the year 1978 ordered by the number of actors in the cast, then by title. --
+
+select title, count(name)
+from actor
+join casting on actor.id = casting.actorid
+join movie on casting.movieid = movie.id
+where yr = 1978
+group by title
+order by count(name) desc, title
+
+-- List all the people who have worked with 'Art Garfunkel'. --
+
+select distinct name
+from actor
+join casting on actor.id = casting.actorid
+join movie on casting.movieid = movie.id
+where title in (select title from actor join casting on actor.id = casting.actorid
+join movie on casting.movieid = movie.id where name = 'art garfunkel') and name != 'art garfunkel'
+order by name
