@@ -38,3 +38,30 @@ where first_name like 'b' and first_name like 'c'
 select last_name, job_id, salary
 from employees
 where job_id = 'it_prog' or job_id = 'sh_clerk' and salary not in (4500, 10000, 15000)
+
+-- Write a query to display the last name of employees whose names have exactly 6 characters. --
+
+select last_name
+from employees
+where length(last_name) = 6
+
+-- Write a query to display the last name of employees having 'e' as the third character. --
+
+select last_name
+from employees
+where substr(last_name, 3, 1) = 'e'
+
+-- Write a query to display the jobs/designations available in the employees table --
+
+select distinct job_id from employees
+
+-- Write a query to display the name (first_name, last_name), salary and PF (15% of salary) of all employees. --
+
+select first_name, last_name, salary, (salary * .15) as PF
+from employees
+
+-- Write a query to select all record from employees where last name in 'BLAKE', 'SCOTT', 'KING' and 'FORD'. --
+
+select *
+from employees
+where last_name in ('blake', 'scott', 'king', 'ford')
