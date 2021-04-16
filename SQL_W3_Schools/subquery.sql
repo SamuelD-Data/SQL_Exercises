@@ -125,4 +125,82 @@ select employee_id
 from employees 
 where employee_id mod 2 = 0
 
--- 
+-- Write a query to find the 5th maximum salary in the employees table. --
+
+select distinct salary
+from employees
+order by salary desc
+limit 1 offset 4
+
+-- Alternate solution --
+
+select distinct salary
+from employees e1
+where 5 = (select count(distinct salary) from employees e2 where e1.salary <= e2.salary)
+
+-- Alternate solution --
+
+select distinct salary
+from employees e1
+where 4 = (select count(distinct salary) from employees e2 where e1.salary < e2.salary)
+
+-- Write a query to find the 4th minimum salary in the employees table. --
+
+select distinct salary
+from employees
+order by salary 
+limit 1 offset 3
+
+-- Alternate solution --
+
+SELECT DISTINCT salary 
+FROM employees e1 
+WHERE 3 = (SELECT COUNT(DISTINCT salary) 
+FROM employees  e2 
+WHERE e2.salary < e1.salary);
+
+-- Alternate solution --
+
+SELECT DISTINCT salary 
+FROM employees e1 
+WHERE 4 = (SELECT COUNT(DISTINCT salary) 
+FROM employees  e2 
+WHERE e2.salary <= e1.salary);
+
+-- Write a query to select last 10 records from a table. --
+
+select * 
+from employees 
+order by employee_id desc 
+limit 10
+
+-- Write a query to list the department ID and name of all the departments where no employee is working. --
+
+select department_id, department_name
+from departments
+where department_id not in (select department_id from employees)
+
+-- Write a query to get 3 maximum salaries. --
+
+select distinct salary
+from employees 
+order by salary desc 
+limit 3
+
+-- Alternate solution -- 
+
+select distinct salary
+from employees as e1
+where 3 >= (select count(distinct salary) from employees as e2 where e1.salary <= e2.salary)
+
+-- Alternate solution -- 
+
+select distinct salary
+from employees as e1
+where 3 > (select count(distinct salary) from employees as e2 where e1.salary < e2.salary)
+
+-- Write a query to get 3 minimum salaries. --
+
+
+
+
