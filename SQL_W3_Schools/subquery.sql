@@ -199,8 +199,21 @@ select distinct salary
 from employees as e1
 where 3 > (select count(distinct salary) from employees as e2 where e1.salary < e2.salary)
 
--- Write a query to get 3 minimum salaries. --
+-- Write a query to get 3 minimum salaries --
 
+select distinct salary
+from employees as e1
+where 3 >= (select count(distinct salary) from employees as e2 where e1.salary >= e2.salary)
 
+-- Alternate Solutions --
 
+select distinct salary
+from employees as e1
+where 3 > (select count(distinct salary) from employees as e2 where e1.salary > e2.salary)
+
+-- Write a query to get nth max salaries of employees --
+
+select distinct salary 
+from employees as e1
+where (2) >= (select count(distinct salary) from employees as e2 where e1.salary <= e2.salary)
 
