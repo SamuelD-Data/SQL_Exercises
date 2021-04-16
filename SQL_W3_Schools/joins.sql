@@ -68,5 +68,32 @@ from employees
 join departments on employees.employee_id = departments.manager_id
 join locations on departments.location_id = locations.location_id
 
--- 
+-- Write a query to display the job title and average salary of employees. --
+
+select job_title, avg(salary) 
+from employees 
+join jobs on employees.job_id = jobs.job_id
+group by job_title
+
+-- Write a query to display job title, employee name, and the difference between salary of the employee and minimum salary for the job. --
+
+select job_title, first_name, last_name, (salary - min_salary)
+from employees
+join jobs on employees.job_id = jobs.job_id
+
+-- Write a query to display the job history that were done by any employee who is currently drawing more than 10000 of salary. --
+
+select job_history.*
+from employees
+join job_history on employees.employee_id = job_history.employee_id
+where salary > 10000
+
+-- Write a query to display department name, name (first_name, last_name), hire date, salary --
+-- of the manager for all managers whose experience is more than 15 years. --
+
+select department_name, first_name, last_name, hire_date, salary
+from employees 
+join departments on employees.department_id = departments.department_id
+join job_history on employees.employee_id = job_history.employee_id
+where ((datefiff(curdate(), hire_date)) / 365) > 15
 
