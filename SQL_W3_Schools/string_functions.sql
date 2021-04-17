@@ -55,10 +55,57 @@ select first_name, last_name
 from employees 
 where first_name = binary upper(first_name)
 
-
 -- Write a query to extract the last 4 character of phone numbers --
 
 select right(phone_number, 4), phone_number
 from employees
 
--- 
+-- Write a query to get the last word of the street address. --
+
+select substring_index(street_address, ' ', -1)
+from locations
+
+-- Write a query to get the locations that have minimum street length. --
+
+select location_id
+from locations
+where length(street_address) = (select min(length(street_address)) from locations)
+
+-- Write a query to display the first word from those job titles which contains more than one words --
+
+select substr(job_title, 1, instr(job_title, ' ') -1)
+from jobs
+
+-- Write a query to display the length of first name for employees where last name contain character 'c' after 2nd position. --
+
+select length(first_name), last_name
+from employees
+where substr(last_name, 3) like '%c%'
+
+-- Write a query that displays the first name and the length of the first name for all employees whose name starts with the letters --
+-- 'A', 'J' or 'M'. Give each column an appropriate label. Sort the results by the employees' first names. --
+
+select first_name, length(first_name) as first_name_length
+from employees
+where substr(first_name,1,1) in ('a', 'j', 'm')
+order by first_name
+
+-- Write a query to display the first name and salary for all employees. --
+-- Format the salary to be 10 characters long, left-padded with the $ symbol. Label the column SALARY. --
+
+select first_name, lpad(salary, 10, '$') as SALARY 
+from employees
+
+--  Write a query to display the first eight characters of the employees' first names and indicates the amounts of their salaries with '$' sign. --
+-- Each '$' sign signifies a thousand dollars. Sort the data in descending order of salary. -- 
+
+select substr(first_name, 1, 8), repeat('$', floor(salary / 1000)) 
+from employees
+order by salary desc
+
+-- Write a query to display the employees with their code, first name, --
+-- last name and hire date who hired either on seventh day of any month or seventh month in any year. --
+
+select first_name, last_name, employee_id, hire_date
+from employees 
+where day(hire_date) = 7 or month(hire_date) = 7
