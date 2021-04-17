@@ -37,15 +37,26 @@ where unitprice between 15 and 25
 
 -- Write a query to get Product list (name, unit price) of above average price. -- 
 
-
+select productid, productname, unitprice
+from products
+where unitprice > (select avg(unitprice) from products)
 
 -- Write a query to get Product list (name, unit price) of ten most expensive products. -- 
 
-
+select productid, productname, unitprice
+from products
+order by unitprice
+limit 10 desc
 
 -- Write a query to count current and discontinued products. -- 
 
-
+select count(productname)
+from products
+group by discontinued
 
 -- Write a query to get Product list (name, units on order , units in stock) --
 -- of stock is less than the quantity on order. -- 
+
+select productname, unitsonorder, unitsinstock
+from products
+where unitsinstock < unitsonorder
