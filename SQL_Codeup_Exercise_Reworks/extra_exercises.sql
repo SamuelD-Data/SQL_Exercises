@@ -220,3 +220,25 @@ and the last two digits of the year that they were born.
 select concat(left(first_name, 1), left(last_name, 4), '_', month(birth_date), date_format(birth_date, '%y')) as username
 from employees
 
+-- Generate a count employees for each unique username. --
+
+select concat(left(first_name, 1), left(last_name, 4), '_', month(birth_date), date_format(birth_date, '%y')) as username, count(*)
+from employees
+group by username
+
+-- Are there any duplicate usernames? --
+
+select concat(left(first_name, 1), left(last_name, 4), '_', month(birth_date), date_format(birth_date, '%y')) as username, count(*)
+from employees
+group by username
+having count(*) > 1
+
+-- Answer: Yes --
+
+-- BONUS: How many duplicate usernames are there? --
+
+select sum(duplicates), count(duplicates)
+from (select concat(left(first_name, 1), left(last_name, 4), '_', month(birth_date), date_format(birth_date, '%y')) as username, count(*) as duplicates
+from employees
+group by username
+having count(*) > 1) as newtable
