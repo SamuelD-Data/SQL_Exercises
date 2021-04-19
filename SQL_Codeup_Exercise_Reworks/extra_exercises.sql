@@ -208,4 +208,15 @@ JOIN inventory on rental.INVENTORY_ID = inventory.INVENTORY_ID
 JOIN film on inventory.FILM_ID = film.FILM_ID
 WHERE RETURN_DATE IS NUll
 
+-- Additional rework of previous exercise --
+
+/*
+Use your knowledge of built in SQL functions to generate a username for all of the employees. 
+A username should be all lowercase, and consist of the first character of the employees first name, 
+the first 4 characters of the employees last name, an underscore, the month the employee was born, 
+and the last two digits of the year that they were born.
+*/
+
+select concat(left(first_name, 1), left(last_name, 4), '_', month(birth_date), date_format(birth_date, '%y')) as username
+from employees
 
