@@ -75,5 +75,44 @@ and coins_needed = (select min(coins_needed)
           where wp2.age = wp1.age and w2.power = w1.power)
 order by power desc, age desc 
 
+/*
+Write a query to print the hacker_id, name, and the total number of challenges created by each student. 
+Sort your results by the total number of challenges in descending order. 
+If more than one student created the same number of challenges, then sort the result by hacker_id. 
+If more than one student created the same number of challenges and the count is less than the maximum number of challenges created, 
+then exclude those students from the result.
+*/
+
+select h1.hacker_id, name, count(*)
+from hackers as h1
+join challenges on h1.hacker_id = challenges.hacker_id
+group by hacker_id, name
+having count(*) not in (select count(*)
+                    from hackers as h2
+                    join challenges on h2.hacker_id = challenges.hacker_id
+                    where h2.hacker_id != h1.hacker_id
+                    group by h2.hacker_id) 
+or count(*) >= all (select count(*)
+                    from hackers as h3
+                    join challenges on h3.hacker_id = challenges.hacker_id
+                    group by h3.hacker_id) 
+order by count(*) desc, h1.hacker_id
+
+/*
+The total score of a hacker is the sum of their maximum scores for all of the challenges. 
+Write a query to print the hacker_id, name, and total score of the hackers ordered by the descending score. 
+If more than one hacker achieved the same total score, then sort the result by ascending hacker_id. 
+Exclude all hackers with a total score of 0 from your result.
+*/
+
+select h1.hacker_id, name, sum(score)
+from hackers as h1
+join submissions as s1 on h1.hacker_id = s1.hacker_id
+where score = (select max(score)
+    from submissions as s2
+    where s2.hacker_id = h1.hacker_id and s2.challenge_id = s1.challenge_id)
+group by hacker_id, name
+having sum(score) != 0
+order by sum(score) desc, hacker_id
 
 
