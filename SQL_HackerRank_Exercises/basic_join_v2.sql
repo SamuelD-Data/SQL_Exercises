@@ -52,3 +52,28 @@ Order your output in descending order by the total number of challenges in which
 If more than one hacker received full scores in same number of challenges, then sort them by ascending hacker_id.
 */
 
+select hackers.hacker_id, name
+from hackers
+join submissions on hackers.hacker_id = submissions.hacker_id
+join challenges on submissions.challenge_id = challenges.challenge_id 
+join difficulty on challenges.difficulty_level = difficulty.difficulty_level
+where submissions.score = difficulty.score
+group by hackers.hacker_id, name
+having count(*) > 1
+order by count(*) desc, hackers.hacker_id
+
+-- Write a query to print the id, age, coins_needed, and power of the wands that Ron's interested in, sorted in order of descending power. --
+-- If more than one wand has same power, sort the result in order of descending age. --
+
+select id, age, coins_needed, power
+from wands as w1
+join wands_property as wp1 on w1.code = wp1.code
+where is_evil = 0
+and coins_needed = (select min(coins_needed)
+          from wands as w2
+          join wands_property as wp2 on w2.code = wp2.code 
+          where wp2.age = wp1.age and w2.power = w1.power)
+order by power desc, age desc 
+
+
+
