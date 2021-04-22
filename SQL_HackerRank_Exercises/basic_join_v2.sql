@@ -105,14 +105,16 @@ If more than one hacker achieved the same total score, then sort the result by a
 Exclude all hackers with a total score of 0 from your result.
 */
 
-select h1.hacker_id, name, sum(score)
+select h1.hacker_id, h1.name, sum(max_scores)
 from hackers as h1
-join submissions as s1 on h1.hacker_id = s1.hacker_id
-where score = (select max(score)
-    from submissions as s2
-    where s2.hacker_id = h1.hacker_id and s2.challenge_id = s1.challenge_id)
-group by hacker_id, name
-having sum(score) != 0
-order by sum(score) desc, hacker_id
+join (select challenge_id, hacker_id, max(score) as max_scores
+      from submissions
+     group by challenge_id, hacker_id) as all_max_scores
+     on h1.hacker_id = all_max_scores.hacker_id
+group by h1.hacker_id, h1.name
+having sum(max_scores) != 0
+order by sum(max_scores) desc, h1.hacker_id
+
+
 
 
